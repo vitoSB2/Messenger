@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import visual.Frame;
 import visual.PanelConexao;
 import visual.PanelPrincipal;
@@ -24,8 +23,9 @@ public class ControladorConexao implements ActionListener, KeyListener{
 	}
 
 	private void addEventos() {
-		panelC.getEnter().addActionListener(this);
 		panelC.getIP().addKeyListener(this);
+		panelC.getEnter().addActionListener(this);
+		
 	}
 	
 	private void mudarPanel() {

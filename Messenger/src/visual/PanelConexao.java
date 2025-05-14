@@ -1,25 +1,21 @@
 package visual;
 
+import java.awt.Color;
 import java.awt.Dimension;
-
+import java.awt.Font;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.awt.Font;
-import javax.swing.border.LineBorder;
-
-import modelo.Util;
-
-import java.awt.Color;
 import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.border.LineBorder;
+import modelo.Util;
 
 public class PanelConexao extends JPanel{
 	
 	JLabel logo, prompt;
 	JTextField IP;
-	JPanel div;
+	JPanel div, blocoTxt;
 	JButton enter;
 	
 	public PanelConexao() {
@@ -30,6 +26,7 @@ public class PanelConexao extends JPanel{
 		this.add(getPrompt());
 		this.add(getEnter());
 		this.add(getIP());
+		this.add(getBlocoTxt());
 		this.add(getDiv());
 	}
 
@@ -74,13 +71,22 @@ public class PanelConexao extends JPanel{
 		if(IP == null) {
 			IP = new JTextField();
 			IP.setBackground(new Color(250, 250, 250));
-			IP.setHorizontalAlignment(SwingConstants.CENTER);
 			IP.setForeground(new Color(45, 45, 45));
-			IP.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
+			IP.setBorder(null);
 			IP.setFont(new Font("Montserrat", Font.BOLD, 14));
-			IP.setBounds(50, 295, 400, 40);
+			IP.setBounds(60, 297, 340, 36);
 		}
 		return IP;
+	}
+
+	public JPanel getBlocoTxt() {
+		if(blocoTxt == null) {
+			blocoTxt = new JPanel();
+			blocoTxt.setBackground(new Color(250, 250, 250));
+			blocoTxt.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
+			blocoTxt.setBounds(50, 295, 400, 40);
+		}
+		return blocoTxt;
 	}
 
 	public JPanel getDiv() {

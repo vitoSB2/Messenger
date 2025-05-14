@@ -3,7 +3,6 @@ package visual;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,14 +10,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
 import modelo.Util;
 
 public class PanelPrincipal extends JPanel{
 	
 	JLabel logo;
 	JTextField texto;
-	JPanel div;
+	JPanel div, blocoTxt, mensagensFundo;
 	JScrollPane mensagens;
 	JButton enter, anexo;
 	
@@ -30,7 +28,8 @@ public class PanelPrincipal extends JPanel{
 		this.add(getEnter());
 		this.add(getAnexo());
 		this.add(getTexto());
-		this.add(getMensagens());
+		this.add(getBlocoTxt());
+		this.add(getMensagensFundo());
 		this.add(getDiv());
 	}
 
@@ -74,11 +73,10 @@ public class PanelPrincipal extends JPanel{
 		if(texto == null) {
 			texto = new JTextField();
 			texto.setBackground(new Color(250, 250, 250));
-			texto.setHorizontalAlignment(SwingConstants.CENTER);
 			texto.setForeground(new Color(45, 45, 45));
-			texto.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
+			texto.setBorder(null);
 			texto.setFont(new Font("Montserrat", Font.BOLD, 14));
-			texto.setBounds(50, 520, 400, 40);
+			texto.setBounds(110, 522, 280, 36);
 		}
 		return texto;
 	}
@@ -86,11 +84,31 @@ public class PanelPrincipal extends JPanel{
 	public JScrollPane getMensagens() {
 		if(mensagens == null) {
 			mensagens = new JScrollPane();
-			mensagens.setBackground(new Color(250, 250, 250));
-			mensagens.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
-			mensagens.setBounds(15, 70, 470, 426);
+			mensagens.setBorder(null);
+			mensagens.setBounds(0, 0, 470, 426);
 		}
 		return mensagens;
+	}
+
+	public JPanel getBlocoTxt() {
+		if(blocoTxt == null) {
+			blocoTxt = new JPanel();
+			blocoTxt.setBackground(new Color(250, 250, 250));
+			blocoTxt.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
+			blocoTxt.setBounds(50, 520, 400, 40);
+		}
+		return blocoTxt;
+	}
+
+	public JPanel getMensagensFundo() {
+		if(mensagensFundo == null) {
+			mensagensFundo = new JPanel();
+			mensagensFundo.setBackground(new Color(250, 250, 250));
+			mensagensFundo.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
+			mensagensFundo.setBounds(15, 70, 470, 426);
+			mensagensFundo.add(getMensagens());
+		}
+		return mensagensFundo;
 	}
 
 	public JPanel getDiv() {
