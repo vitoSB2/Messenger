@@ -29,7 +29,7 @@ public class PanelPrincipal extends JPanel{
 		this.add(getAnexo());
 		this.add(getTexto());
 		this.add(getBlocoTxt());
-		this.add(getMensagensFundo());
+		this.add(getMensagens());
 		this.add(getDiv());
 	}
 
@@ -84,8 +84,9 @@ public class PanelPrincipal extends JPanel{
 	public JScrollPane getMensagens() {
 		if(mensagens == null) {
 			mensagens = new JScrollPane();
-			mensagens.setBorder(null);
-			mensagens.setBounds(0, 0, 470, 426);
+			mensagens.setBounds(15, 70, 470, 426);
+			mensagens.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
+			mensagens.setViewportView(getMensagensFundo());
 		}
 		return mensagens;
 	}
@@ -104,9 +105,8 @@ public class PanelPrincipal extends JPanel{
 		if(mensagensFundo == null) {
 			mensagensFundo = new JPanel();
 			mensagensFundo.setBackground(new Color(250, 250, 250));
-			mensagensFundo.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
-			mensagensFundo.setBounds(15, 70, 470, 426);
-			mensagensFundo.add(getMensagens());
+			mensagensFundo.setPreferredSize(new Dimension(ABORT, 420));
+			mensagensFundo.setLayout(null);
 		}
 		return mensagensFundo;
 	}

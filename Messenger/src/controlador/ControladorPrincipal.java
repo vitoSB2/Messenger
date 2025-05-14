@@ -4,7 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import visual.Frame;
 import visual.PanelPrincipal;
 
@@ -12,6 +14,8 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 	
 	PanelPrincipal panelP;
 	Frame f;
+	File arquivo;
+	boolean importado;
 	public ControladorPrincipal(Frame f, PanelPrincipal pp) {
 		this.f = f;
 		panelP = pp;
@@ -24,12 +28,37 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 		panelP.getEnter().addActionListener(this);
 		panelP.getAnexo().addActionListener(this);
 		panelP.getTexto().addKeyListener(this);
-		
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == panelP.getEnter()) {
 			System.out.println("" + panelP.getTexto().getText());
+		}
+
+		if(e.getSource() == panelP.getAnexo()) {
+			// CRIA UMA ABA PARA A SELEÇÃO DE ARQUIVO
+			JFileChooser fileChooser = new JFileChooser();
+	        int resultado = fileChooser.showOpenDialog(null);
+	        
+	        // SE O ARQUIVO FOR SELECIONADO
+	        if (resultado == JFileChooser.APPROVE_OPTION) {
+	        	// GUARDA O ARQUIVO
+	            arquivo = fileChooser.getSelectedFile();
+				double tamanhoMB = arquivo.length() / (1024.0 * 1024.0);
+	            
+	            // TESTA SE O ARQUIVO EXISTE
+	            if(arquivo.exists() && tamanhoMB < 1) {
+	    	        panelP.getTexto().setText(arquivo.getName());
+					panelP.getTexto().setEnabled(false);
+					importado = true;
+	            } else if (!arquivo.exists()){
+					JOptionPane.showMessageDialog(null, "O Arquivo selecionado não existe!", 
+					"Aviso", JOptionPane.WARNING_MESSAGE);
+				} else if (tamanhoMB > 1){
+					JOptionPane.showMessageDialog(null, "O Arquivo selecionado é maior que 1MB!", 
+					"Aviso", JOptionPane.WARNING_MESSAGE);
+				}
+			}
 		}
 	}
 	
