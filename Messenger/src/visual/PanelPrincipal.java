@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -214,21 +216,21 @@ public class PanelPrincipal extends JPanel{
     	mensagensFundo.revalidate();
 	}
 
-	public void criarArquivoEnviado(String nome){
+	public void criarArquivoEnviado(File arquivo){
 		quantMensagens++;
 		if(quantMensagens>mensagens.length)
 			aumentarTamanhoMensagens();
 
-		mensagens[quantMensagens-1] = new JLabel(nome);
+		mensagens[quantMensagens-1] = new JLabel(arquivo.getName());
 		mensagens[quantMensagens-1].setFont(new Font("Montserrat", Font.BOLD, 14));
 		mensagens[quantMensagens-1].setLocation(15, 15);
 
 		// OBTEM-SE A FONTMETRICS ATRAVÉS DO JLABEL
 		FontMetrics fm = mensagens[quantMensagens-1].getFontMetrics(mensagens[quantMensagens-1].getFont());
-		if(fm.stringWidth(nome) > maxWidth-67){
+		if(fm.stringWidth(arquivo.getName()) > maxWidth-67){
         	mensagens[quantMensagens-1].setSize(new Dimension(maxWidth-77, fm.getHeight()));
 		} else
-			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(nome), fm.getHeight()));
+			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(arquivo.getName()), fm.getHeight()));
 		
 		mensagens[quantMensagens-1].setSize(mensagens[quantMensagens-1].getPreferredSize());
 
@@ -267,21 +269,21 @@ public class PanelPrincipal extends JPanel{
 		mensagensFundo.repaint();
 	}
 
-	public void criarArquivoRecebido(String nome){
+	public void criarArquivoRecebido(File arquivo){
 		quantMensagens++;
 		if(quantMensagens>mensagens.length)
 			aumentarTamanhoMensagens();
 
-		mensagens[quantMensagens-1] = new JLabel(nome);
+		mensagens[quantMensagens-1] = new JLabel(arquivo.getName());
 		mensagens[quantMensagens-1].setFont(new Font("Montserrat", Font.BOLD, 14));
 		mensagens[quantMensagens-1].setLocation(15, 15);
 
 		// OBTEM-SE A FONTMETRICS ATRAVÉS DO JLABEL
 		FontMetrics fm = mensagens[quantMensagens-1].getFontMetrics(mensagens[quantMensagens-1].getFont());
-		if(fm.stringWidth(nome) > maxWidth-67){
+		if(fm.stringWidth(arquivo.getName()) > maxWidth-67){
         	mensagens[quantMensagens-1].setSize(new Dimension(maxWidth-77, fm.getHeight()));
 		} else
-			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(nome), fm.getHeight()));
+			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(arquivo.getName()), fm.getHeight()));
 		
 		mensagens[quantMensagens-1].setSize(mensagens[quantMensagens-1].getPreferredSize());
 

@@ -33,7 +33,7 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == panelP.getEnter()) {
 			if(importado){
-				panelP.criarArquivoEnviado(arquivo.getName());
+				panelP.criarArquivoEnviado(arquivo);
 				panelP.getTexto().setText("");
 				panelP.getTexto().setEnabled(true);
 				importado = false;
@@ -80,7 +80,7 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if(importado){
-				panelP.criarArquivoEnviado(arquivo.getName());
+				panelP.criarArquivoEnviado(arquivo);
 				panelP.getTexto().setText("");
 				panelP.getTexto().setEnabled(true);
 				importado = false;
@@ -90,6 +90,13 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 				f.repaint();
 				f.revalidate();
 			}
+		}
+
+		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+			panelP.criarMensagemRecebida(panelP.getTexto().getText());
+			panelP.getTexto().setText("");
+			f.repaint();
+			f.revalidate();
 		}
 	}
 
