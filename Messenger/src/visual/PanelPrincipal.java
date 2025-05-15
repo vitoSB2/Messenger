@@ -3,11 +3,15 @@ package visual;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import modelo.Util;
@@ -17,11 +21,18 @@ public class PanelPrincipal extends JPanel{
 	JLabel logo;
 	JTextField texto;
 	JPanel div, blocoTxt, mensagensFundo;
-	JScrollPane mensagens;
+	JScrollPane conversa;
 	JButton enter, anexo;
+	JPanel[] mensagensPane;
+	JLabel[] mensagens;
+	JButton[] downloads;
+	int quantMensagens=0, maxWidth=220, espacamento=20;
 	
 	public PanelPrincipal() {
 		setBackground(new Color(235, 235, 235));
+		mensagensPane = new JPanel[1];
+		mensagens = new JLabel[1];
+		downloads = new JButton[1];
 		this.setLayout(null);
 		this.setPreferredSize(new Dimension(500, 600));
 		this.add(getLogo());
@@ -29,7 +40,7 @@ public class PanelPrincipal extends JPanel{
 		this.add(getAnexo());
 		this.add(getTexto());
 		this.add(getBlocoTxt());
-		this.add(getMensagens());
+		this.add(getConversa());
 		this.add(getDiv());
 	}
 
@@ -81,14 +92,15 @@ public class PanelPrincipal extends JPanel{
 		return texto;
 	}
 
-	public JScrollPane getMensagens() {
-		if(mensagens == null) {
-			mensagens = new JScrollPane();
-			mensagens.setBounds(15, 70, 470, 426);
-			mensagens.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
-			mensagens.setViewportView(getMensagensFundo());
+	public JScrollPane getConversa() {
+		if(conversa == null) {
+			conversa = new JScrollPane();
+			conversa.setBounds(15, 70, 470, 426);
+			conversa.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
+			conversa.setViewportView(getMensagensFundo());
+			conversa.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		}
-		return mensagens;
+		return conversa;
 	}
 
 	public JPanel getBlocoTxt() {
@@ -105,7 +117,7 @@ public class PanelPrincipal extends JPanel{
 		if(mensagensFundo == null) {
 			mensagensFundo = new JPanel();
 			mensagensFundo.setBackground(new Color(250, 250, 250));
-			mensagensFundo.setPreferredSize(new Dimension(ABORT, 420));
+			mensagensFundo.setPreferredSize(new Dimension(470, 420));
 			mensagensFundo.setLayout(null);
 		}
 		return mensagensFundo;
@@ -119,5 +131,209 @@ public class PanelPrincipal extends JPanel{
 			div.setBounds(15, 70, 470, 515);
 		}
 		return div;
+	}
+
+	public void criarMensagemEnviada(String msg){
+		quantMensagens++;
+		if(quantMensagens>mensagens.length)
+			aumentarTamanhoMensagens();
+
+		mensagens[quantMensagens-1] = new JLabel(msg);
+		mensagens[quantMensagens-1].setFont(new Font("Montserrat", Font.BOLD, 14));
+		mensagens[quantMensagens-1].setLocation(15, 15);
+
+		// OBTEM-SE A FONTMETRICS ATRAVÉS DO JLABEL
+		FontMetrics fm = mensagens[quantMensagens-1].getFontMetrics(mensagens[quantMensagens-1].getFont());
+		if(fm.stringWidth(msg) > maxWidth+10){
+			// PULA AS LINHAS CASO ALGANCE O MAXIMO DE LARGURA
+			msg = "<html><div style='width:" + maxWidth + "px'>" + msg + "</div></html>";
+			mensagens[quantMensagens-1].setText(msg);
+			fm = mensagens[quantMensagens-1].getFontMetrics(mensagens[quantMensagens-1].getFont());
+        	mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(msg), mensagens[quantMensagens - 1].getPreferredSize().height));
+		} else
+			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(msg), fm.getHeight()));
+		
+		mensagens[quantMensagens-1].setSize(mensagens[quantMensagens-1].getPreferredSize());
+
+		mensagensPane[quantMensagens-1] = new JPanel();
+		mensagensPane[quantMensagens-1].setLayout(null);
+		mensagensPane[quantMensagens-1].setBackground(new Color(213, 233, 255));
+		mensagensPane[quantMensagens-1].setBorder(new LineBorder(new Color(167, 190, 215), 1, true));
+		mensagensPane[quantMensagens-1].setBounds(
+			mensagensFundo.getWidth()-mensagens[quantMensagens-1].getWidth()-60, 
+			espacamento, 
+			mensagens[quantMensagens-1].getWidth()+30, 
+			mensagens[quantMensagens-1].getHeight()+30);
+
+		mensagensPane[quantMensagens-1].add(mensagens[quantMensagens-1]);
+		mensagensFundo.add(mensagensPane[quantMensagens-1]);
+
+		espacamento += mensagensPane[quantMensagens-1].getHeight() + 20;
+
+		mensagensFundo.setPreferredSize(new Dimension(mensagensFundo.getWidth(), espacamento));
+    	mensagensFundo.revalidate();
+	}
+
+	public void criarMensagemRecebida(String msg){
+		quantMensagens++;
+		if(quantMensagens>mensagens.length)
+			aumentarTamanhoMensagens();
+
+		mensagens[quantMensagens-1] = new JLabel(msg);
+		mensagens[quantMensagens-1].setFont(new Font("Montserrat", Font.BOLD, 14));
+		mensagens[quantMensagens-1].setLocation(15, 15);
+
+		// OBTEM-SE A FONTMETRICS ATRAVÉS DO JLABEL
+		FontMetrics fm = mensagens[quantMensagens-1].getFontMetrics(mensagens[quantMensagens-1].getFont());
+		if(fm.stringWidth(msg) > maxWidth+10){
+			// PULA AS LINHAS CASO ALGANCE O MAXIMO DE LARGURA
+			msg = "<html><div style='width:" + maxWidth + "px'>" + msg + "</div></html>";
+			mensagens[quantMensagens-1].setText(msg);
+			fm = mensagens[quantMensagens-1].getFontMetrics(mensagens[quantMensagens-1].getFont());
+        	mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(msg), mensagens[quantMensagens - 1].getPreferredSize().height));
+		} else
+			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(msg), fm.getHeight()));
+		
+		mensagens[quantMensagens-1].setSize(mensagens[quantMensagens-1].getPreferredSize());
+
+		mensagensPane[quantMensagens-1] = new JPanel();
+		mensagensPane[quantMensagens-1].setLayout(null);
+		mensagensPane[quantMensagens-1].setBackground(new Color(235, 235, 235));
+		mensagensPane[quantMensagens-1].setBorder(new LineBorder(new Color(189, 189, 189), 1, true));
+		mensagensPane[quantMensagens-1].setBounds(
+			30, espacamento, 
+			mensagens[quantMensagens-1].getWidth()+30, 
+			mensagens[quantMensagens-1].getHeight()+30);
+
+		mensagensPane[quantMensagens-1].add(mensagens[quantMensagens-1]);
+		mensagensFundo.add(mensagensPane[quantMensagens-1]);
+
+		espacamento += mensagensPane[quantMensagens-1].getHeight() + 20;
+
+		mensagensFundo.setPreferredSize(new Dimension(mensagensFundo.getWidth(), espacamento));
+    	mensagensFundo.revalidate();
+	}
+
+	public void criarArquivoEnviado(String nome){
+		quantMensagens++;
+		if(quantMensagens>mensagens.length)
+			aumentarTamanhoMensagens();
+
+		mensagens[quantMensagens-1] = new JLabel(nome);
+		mensagens[quantMensagens-1].setFont(new Font("Montserrat", Font.BOLD, 14));
+		mensagens[quantMensagens-1].setLocation(15, 15);
+
+		// OBTEM-SE A FONTMETRICS ATRAVÉS DO JLABEL
+		FontMetrics fm = mensagens[quantMensagens-1].getFontMetrics(mensagens[quantMensagens-1].getFont());
+		if(fm.stringWidth(nome) > maxWidth-67){
+        	mensagens[quantMensagens-1].setSize(new Dimension(maxWidth-77, fm.getHeight()));
+		} else
+			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(nome), fm.getHeight()));
+		
+		mensagens[quantMensagens-1].setSize(mensagens[quantMensagens-1].getPreferredSize());
+
+		downloads[quantMensagens-1] = new JButton();
+		downloads[quantMensagens-1].setOpaque(false);
+		downloads[quantMensagens-1].setBackground(new Color(213, 233, 255));
+		downloads[quantMensagens-1].setBorder(new LineBorder(new Color(167, 190, 215), 1, false));
+		downloads[quantMensagens - 1].setIcon(Util.resizeIcon("download", 23, 25));
+		downloads[quantMensagens-1].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// COLOCAR O ALGORITMO DE BAIXAR AQUI
+			}
+		});
+		downloads[quantMensagens - 1].setBounds(
+        	mensagens[quantMensagens - 1].getWidth() + 30, 
+			0, 47, 47);
+
+		mensagensPane[quantMensagens-1] = new JPanel();
+		mensagensPane[quantMensagens-1].setLayout(null);
+		mensagensPane[quantMensagens-1].setBackground(new Color(213, 233, 255));
+		mensagensPane[quantMensagens-1].setBorder(new LineBorder(new Color(167, 190, 215), 1, true));
+		mensagensPane[quantMensagens-1].setBounds(
+			mensagensFundo.getWidth()-mensagens[quantMensagens-1].getWidth()-107, 
+			espacamento, 
+			mensagens[quantMensagens-1].getWidth()+30+47, 
+			mensagens[quantMensagens-1].getHeight()+30);
+
+		mensagensPane[quantMensagens-1].add(mensagens[quantMensagens-1]);
+		mensagensPane[quantMensagens-1].add(downloads[quantMensagens-1]);
+		mensagensFundo.add(mensagensPane[quantMensagens-1]);
+
+		espacamento += mensagensPane[quantMensagens-1].getHeight() + 20;
+
+		mensagensFundo.setPreferredSize(new Dimension(mensagensFundo.getWidth(), espacamento));
+    	mensagensFundo.revalidate();
+		mensagensFundo.repaint();
+	}
+
+	public void criarArquivoRecebido(String nome){
+		quantMensagens++;
+		if(quantMensagens>mensagens.length)
+			aumentarTamanhoMensagens();
+
+		mensagens[quantMensagens-1] = new JLabel(nome);
+		mensagens[quantMensagens-1].setFont(new Font("Montserrat", Font.BOLD, 14));
+		mensagens[quantMensagens-1].setLocation(15, 15);
+
+		// OBTEM-SE A FONTMETRICS ATRAVÉS DO JLABEL
+		FontMetrics fm = mensagens[quantMensagens-1].getFontMetrics(mensagens[quantMensagens-1].getFont());
+		if(fm.stringWidth(nome) > maxWidth-67){
+        	mensagens[quantMensagens-1].setSize(new Dimension(maxWidth-77, fm.getHeight()));
+		} else
+			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(nome), fm.getHeight()));
+		
+		mensagens[quantMensagens-1].setSize(mensagens[quantMensagens-1].getPreferredSize());
+
+		downloads[quantMensagens-1] = new JButton();
+		downloads[quantMensagens-1].setOpaque(false);
+		downloads[quantMensagens-1].setBackground(new Color(235, 235, 235));
+		downloads[quantMensagens-1].setBorder(new LineBorder(new Color(189, 189, 189), 1, false));
+		downloads[quantMensagens - 1].setIcon(Util.resizeIcon("download", 23, 25));
+		downloads[quantMensagens-1].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// COLOCAR O ALGORITMO DE BAIXAR AQUI
+			}
+		});
+		downloads[quantMensagens - 1].setBounds(
+        	mensagens[quantMensagens - 1].getWidth() + 30, 
+			0, 47, 47);
+
+		mensagensPane[quantMensagens-1] = new JPanel();
+		mensagensPane[quantMensagens-1].setLayout(null);
+		mensagensPane[quantMensagens-1].setBackground(new Color(235, 235, 235));
+		mensagensPane[quantMensagens-1].setBorder(new LineBorder(new Color(189, 189, 189), 1, true));
+		mensagensPane[quantMensagens-1].setBounds(
+			20, 
+			espacamento, 
+			mensagens[quantMensagens-1].getWidth()+30+47, 
+			mensagens[quantMensagens-1].getHeight()+30);
+
+		mensagensPane[quantMensagens-1].add(mensagens[quantMensagens-1]);
+		mensagensPane[quantMensagens-1].add(downloads[quantMensagens-1]);
+		mensagensFundo.add(mensagensPane[quantMensagens-1]);
+
+		espacamento += mensagensPane[quantMensagens-1].getHeight() + 20;
+
+		mensagensFundo.setPreferredSize(new Dimension(mensagensFundo.getWidth(), espacamento));
+    	mensagensFundo.revalidate();
+		mensagensFundo.repaint();
+	}
+
+	// AUMENTA A ACAPACIDADE DO ARRAY DAS MENSAGENS
+	public void aumentarTamanhoMensagens(){
+		JLabel[] aux = new JLabel[quantMensagens];
+		JPanel[] auxP = new JPanel[quantMensagens];
+		JButton[] auxB = new JButton[quantMensagens];
+
+		for (int i = 0; i < mensagens.length; i++) {
+			aux[i] = mensagens[i];
+			auxP[i] = mensagensPane[i];
+			auxB[i] = downloads[i];
+		}
+
+		mensagens = aux;
+		mensagensPane = auxP;
+		downloads = auxB;
 	}
 }
