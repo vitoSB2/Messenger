@@ -91,13 +91,6 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 				f.revalidate();
 			}
 		}
-
-		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-			panelP.criarMensagemRecebida(panelP.getTexto().getText());
-			panelP.getTexto().setText("");
-			f.repaint();
-			f.revalidate();
-		}
 	}
 
 	public void keyReleased(KeyEvent e) {
