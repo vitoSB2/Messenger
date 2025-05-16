@@ -13,9 +13,9 @@ import modelo.Util;
 
 public class PanelConexao extends JPanel{
 	
-	JLabel logo, prompt;
-	JTextField IP;
-	JPanel div, blocoTxt;
+	JLabel logo, promptIP, promptPorta;
+	JTextField IP, porta;
+	JPanel div;
 	JButton enter;
 	
 	public PanelConexao() {
@@ -23,10 +23,11 @@ public class PanelConexao extends JPanel{
 		this.setLayout(null);
 		this.setPreferredSize(new Dimension(500, 600));
 		this.add(getLogo());
-		this.add(getPrompt());
+		this.add(getPromptIP());
+		this.add(getPromptPorta());
 		this.add(getEnter());
 		this.add(getIP());
-		this.add(getBlocoTxt());
+		this.add(getPorta());
 		this.add(getDiv());
 	}
 
@@ -42,27 +43,41 @@ public class PanelConexao extends JPanel{
 		return logo;
 	}
 
-	public JLabel getPrompt() {
-		if(prompt == null) {
-			prompt = new JLabel();
-			prompt.setHorizontalAlignment(SwingConstants.CENTER);
-			prompt.setForeground(new Color(45, 45, 45));
-			prompt.setFont(new Font("Montserrat", Font.BOLD, 15));
-			prompt.setBounds(50, 265, 400, 17);
-			prompt.setText("Insira o IP da máquina que você deseja se conectar:");
+	public JLabel getPromptIP() {
+		if(promptIP == null) {
+			promptIP = new JLabel();
+			promptIP.setHorizontalAlignment(SwingConstants.CENTER);
+			promptIP.setForeground(new Color(45, 45, 45));
+			promptIP.setFont(new Font("Montserrat", Font.BOLD, 15));
+			promptIP.setBounds(45, 208, 410, 18);
+			promptIP.setText("Insira o IP do servidor que você deseja se conectar:");
 		}
-		return prompt;
+		return promptIP;
+	}
+
+	public JLabel getPromptPorta() {
+		if(promptPorta == null) {
+			promptPorta = new JLabel();
+			promptPorta.setHorizontalAlignment(SwingConstants.CENTER);
+			promptPorta.setForeground(new Color(45, 45, 45));
+			promptPorta.setFont(new Font("Montserrat", Font.BOLD, 14));
+			promptPorta.setBounds(140, 310, 220, 18);
+			promptPorta.setText("Insira a porta para conexão:");
+		}
+		return promptPorta;
 	}
 
 	public JButton getEnter() {
 		if(enter == null) {
-			enter = new JButton();
-			enter.setBackground(new Color(250, 250, 250));
-			enter.setIcon(Util.resizeIcon("enter", 26, 20));
-			enter.setBorder(new LineBorder(new Color(210, 210, 210), 1, true));
+			enter = new JButton("Conectar");
+			enter.setHorizontalTextPosition(SwingConstants.LEFT);
+			enter.setIconTextGap(15);
+			enter.setBackground(new Color(213, 233, 255));
+			enter.setIcon(Util.resizeIcon("enter", 27, 22));
+			enter.setBorder(new LineBorder(new Color(167, 190, 215), 2, true));
+			enter.setFont(new Font("Montserrat", Font.BOLD, 16));
 			enter.setHorizontalAlignment(SwingConstants.CENTER);
-			enter.setBorder(null);
-			enter.setBounds(400, 297, 48, 36);
+			enter.setBounds(175, 423, 150, 48);
 		}
 		return enter;
 	}
@@ -72,21 +87,25 @@ public class PanelConexao extends JPanel{
 			IP = new JTextField();
 			IP.setBackground(new Color(250, 250, 250));
 			IP.setForeground(new Color(45, 45, 45));
-			IP.setBorder(null);
+			IP.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
+			IP.setHorizontalAlignment(SwingConstants.CENTER);
 			IP.setFont(new Font("Montserrat", Font.BOLD, 14));
-			IP.setBounds(60, 297, 340, 36);
+			IP.setBounds(75, 241, 350, 40);
 		}
 		return IP;
 	}
 
-	public JPanel getBlocoTxt() {
-		if(blocoTxt == null) {
-			blocoTxt = new JPanel();
-			blocoTxt.setBackground(new Color(250, 250, 250));
-			blocoTxt.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
-			blocoTxt.setBounds(50, 295, 400, 40);
+	public JTextField getPorta() {
+		if(porta == null) {
+			porta = new JTextField();
+			porta.setBackground(new Color(250, 250, 250));
+			porta.setForeground(new Color(45, 45, 45));
+			porta.setBorder(new LineBorder(new Color(210, 210, 210), 2, true));
+			porta.setHorizontalAlignment(SwingConstants.CENTER);
+			porta.setFont(new Font("Montserrat", Font.BOLD, 14));
+			porta.setBounds(150, 343, 200, 40);
 		}
-		return blocoTxt;
+		return porta;
 	}
 
 	public JPanel getDiv() {
