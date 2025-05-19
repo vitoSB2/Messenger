@@ -14,6 +14,7 @@ public class ControladorConexao implements ActionListener, KeyListener{
 	PanelPrincipal panelP;
 	ControladorPrincipal cp;
 	Frame f;
+	String ip, porta;
 	public ControladorConexao(PanelConexao pc, Frame f) {
 		this.f = f;
 		panelC = pc;
@@ -30,6 +31,7 @@ public class ControladorConexao implements ActionListener, KeyListener{
 	
 	private void mudarPanel() {
 		panelP = new PanelPrincipal();
+		panelP.setIP(ip);
 		f.setContentPane(panelP);
 		f.repaint();
 		f.revalidate();
@@ -39,6 +41,9 @@ public class ControladorConexao implements ActionListener, KeyListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == panelC.getEnter()) {
+			ip = panelC.getIP().getText();
+			System.out.println(ip);
+			porta = panelC.getPorta().getText();
 			mudarPanel();
 		}
 	}

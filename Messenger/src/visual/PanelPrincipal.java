@@ -20,7 +20,7 @@ import modelo.Util;
 
 public class PanelPrincipal extends JPanel{
 	
-	JLabel logo;
+	JLabel logo, IP;
 	JTextField texto;
 	JPanel div, blocoTxt, mensagensFundo;
 	JScrollPane conversa;
@@ -28,7 +28,8 @@ public class PanelPrincipal extends JPanel{
 	JPanel[] mensagensPane;
 	JLabel[] mensagens;
 	JButton[] downloads;
-	int quantMensagens=0, maxWidth=220, espacamento=20;
+	String IPconectado;
+	int quantMensagens=37, maxWidth=220, espacamento=20;
 	
 	public PanelPrincipal() {
 		setBackground(new Color(235, 235, 235));
@@ -45,6 +46,11 @@ public class PanelPrincipal extends JPanel{
 		this.add(getConversa());
 		this.add(getDiv());
 	}
+	
+	public void setIP(String IP) {
+		this.IPconectado = IP;
+		this.IP.setText("Conectado no IP: " + IPconectado);
+	}
 
 	public JLabel getLogo() {
 		if(logo == null) {
@@ -58,6 +64,17 @@ public class PanelPrincipal extends JPanel{
 		return logo;
 	}
 
+	public JLabel getIP() {
+		if(IP == null) {
+			IP = new JLabel();
+			IP.setForeground(new Color(160, 160, 160));
+			IP.setFont(new Font("Montserrat", Font.BOLD, 14));
+			IP.setBounds(0, 20, 470, 17);
+			IP.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return IP;
+	}
+	
 	public JButton getEnter() {
 		if(enter == null) {
 			enter = new JButton();
@@ -121,6 +138,7 @@ public class PanelPrincipal extends JPanel{
 			mensagensFundo.setBackground(new Color(250, 250, 250));
 			mensagensFundo.setPreferredSize(new Dimension(470, 420));
 			mensagensFundo.setLayout(null);
+			mensagensFundo.add(getIP());
 		}
 		return mensagensFundo;
 	}
