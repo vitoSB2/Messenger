@@ -29,7 +29,7 @@ public class PanelPrincipal extends JPanel{
 	JLabel[] mensagens;
 	JButton[] downloads;
 	String IPconectado;
-	int quantMensagens=37, maxWidth=220, espacamento=20;
+	int quantMensagens=0, maxWidth=220, espacamento=57;
 	
 	public PanelPrincipal() {
 		setBackground(new Color(235, 235, 235));
