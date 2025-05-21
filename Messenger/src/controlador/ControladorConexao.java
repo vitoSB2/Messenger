@@ -44,6 +44,17 @@ public class ControladorConexao implements ActionListener, KeyListener{
 			ip = panelC.getIP().getText();
 			System.out.println(ip);
 			porta = panelC.getPorta().getText();
+			
+			// SEM TRATAMENTO, POR ENQUANTO, PARA RECEBER IP/PORTA 100% CERTO
+			
+			// SE A CAIXA DO IP ESTIVER VAZIA, INICIA UM SERVER COM A PORTA DIGITADA
+			// CASO CONTRÁRIO, INICIA CLIENTE E TENTA ENTRAR NUM SERVER COM O IP E PORTA DIGITADOS
+			if(panelC.getIP().getText().isEmpty()) {
+				Main.server = new Server(porta);
+			} else {
+				Main.cliente = new Cliente(ip, porta);
+			}
+			
 			mudarPanel();
 		}
 	}

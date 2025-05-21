@@ -8,6 +8,8 @@ public class Main {
 	Frame f;
 	PanelConexao pc;
 	ControladorConexao cc;
+	public static Server server;
+	public static Cliente cliente;
 	
 	public Main() {
 		pc = new PanelConexao();
