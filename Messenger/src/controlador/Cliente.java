@@ -20,7 +20,7 @@ public class Cliente {
         
         new Thread(()->{
         	try {//						   this.ip
-        		clienteSocket = new Socket("localhost", this.porta);
+        		clienteSocket = new Socket(this.ip, this.porta);
         		System.out.println("Conectado ao servidor!");
         		
         		in = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()));
@@ -32,6 +32,7 @@ public class Cliente {
         			try {
         				while ((mensagem = clienteReceba()) != null) {
         					System.out.println("Servidor: " + mensagem);
+        					
         				}
         			} catch (Exception e) {
         				System.out.println("Conexão encerrada pelo servidor.");

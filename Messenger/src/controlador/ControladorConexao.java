@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import visual.Frame;
 import visual.PanelConexao;
 import visual.PanelPrincipal;
@@ -44,6 +47,14 @@ public class ControladorConexao implements ActionListener, KeyListener{
 			ip = panelC.getIP().getText();
 			System.out.println(ip);
 			porta = panelC.getPorta().getText();
+			InetAddress ipLocal = null;
+			try {
+				ipLocal = InetAddress.getLocalHost();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			ip = ipLocal.getHostAddress();
 			
 			// SEM TRATAMENTO, POR ENQUANTO, PARA RECEBER IP/PORTA 100% CERTO
 			

@@ -39,6 +39,7 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 				importado = false;
 			} else {
 				panelP.criarMensagemEnviada(panelP.getTexto().getText());
+				Main.cliente.clienteSend(panelP.getTexto().getText());
 				panelP.getTexto().setText("");
 				f.repaint();
 				f.revalidate();
