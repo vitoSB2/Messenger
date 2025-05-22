@@ -28,7 +28,7 @@ public class PanelPrincipal extends JPanel{
 	JPanel[] mensagensPane;
 	JLabel[] mensagens;
 	JButton[] downloads;
-	String IPconectado;
+	String IPconectado, porta;
 	int quantMensagens=0, maxWidth=220, espacamento=57;
 	
 	public PanelPrincipal() {
@@ -47,9 +47,10 @@ public class PanelPrincipal extends JPanel{
 		this.add(getDiv());
 	}
 	
-	public void setIP(String IP) {
+	public void setIP(String IP, String porta) {
 		this.IPconectado = IP;
-		this.IP.setText("Conectado no IP: " + IPconectado);
+		this.porta = porta;
+		this.IP.setText("Conectado no IP: " + IPconectado + " na Porta:" + this.porta);
 	}
 
 	public JLabel getLogo() {

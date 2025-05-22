@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
 import visual.Frame;
 import visual.PanelConexao;
 import visual.PanelPrincipal;
@@ -34,7 +33,7 @@ public class ControladorConexao implements ActionListener, KeyListener{
 	
 	private void mudarPanel() {
 		panelP = new PanelPrincipal();
-		panelP.setIP(ip);
+		panelP.setIP(ip, panelC.getPorta().getText());
 		f.setContentPane(panelP);
 		f.repaint();
 		f.revalidate();
