@@ -7,6 +7,8 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import modelo.State;
 import visual.Frame;
 import visual.PanelPrincipal;
 
@@ -38,8 +40,12 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 				panelP.getTexto().setEnabled(true);
 				importado = false;
 			} else {
+				if (State.state == State.CLIENTE) {
+					Main.cliente.clienteSend(panelP.getTexto().getText());
+				} else if (State.state == State.SERVER) {
+					Main.server.serverSend(panelP.getTexto().getText());
+				}
 				panelP.criarMensagemEnviada(panelP.getTexto().getText());
-				Main.cliente.clienteSend(panelP.getTexto().getText());
 				panelP.getTexto().setText("");
 				f.repaint();
 				f.revalidate();

@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
+import modelo.State;
 import visual.Frame;
 import visual.PanelConexao;
 import visual.PanelPrincipal;
@@ -46,14 +48,6 @@ public class ControladorConexao implements ActionListener, KeyListener{
 			ip = panelC.getIP().getText();
 			System.out.println(ip);
 			porta = panelC.getPorta().getText();
-			InetAddress ipLocal = null;
-			try {
-				ipLocal = InetAddress.getLocalHost();
-			} catch (UnknownHostException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			ip = ipLocal.getHostAddress();
 			
 			// SEM TRATAMENTO, POR ENQUANTO, PARA RECEBER IP/PORTA 100% CERTO
 			
@@ -61,8 +55,23 @@ public class ControladorConexao implements ActionListener, KeyListener{
 			// CASO CONTRÁRIO, INICIA CLIENTE E TENTA ENTRAR NUM SERVER COM O IP E PORTA DIGITADOS
 			if(panelC.getIP().getText().isEmpty()) {
 				Main.server = new Server(porta);
+				State.state = State.SERVER;
+				System.out.println("Estado: SERVER");
+				
+				// SETA O IP PARA CONEXÃO COMO O DA MÁQUINA QUE VIRA SERVIDOR
+				InetAddress ipLocal = null;
+				try {
+					ipLocal = InetAddress.getLocalHost();
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				ip = ipLocal.getHostAddress();
+				
 			} else {
 				Main.cliente = new Cliente(ip, porta);
+				State.state = State.CLIENTE;
+				System.out.println("Estado: CLIENTE");
 			}
 			
 			mudarPanel();

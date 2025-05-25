@@ -26,16 +26,18 @@ public class Cliente {
         		in = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()));
         		out = new PrintWriter(clienteSocket.getOutputStream(), true);
         		
+        		//System.out.println("Socket conectado? " + clienteSocket.isConnected());
+        		//System.out.println("Socket fechado? " + clienteSocket.isClosed());
+        		
         		// THREAD PRA VERIFICAR CHEGADA DE MENSAGEM
         		new Thread(() -> {
         			String mensagem;
         			try {
         				while ((mensagem = clienteReceba()) != null) {
         					System.out.println("Servidor: " + mensagem);
-        					
         				}
         			} catch (Exception e) {
-        				System.out.println("Conexão encerrada pelo servidor.");
+        				e.printStackTrace();
         			}
         		}).start();
         		

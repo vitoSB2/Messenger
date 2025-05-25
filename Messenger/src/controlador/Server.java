@@ -57,7 +57,7 @@ public class Server {
 	}
 	
 	public void serverSend(String msgS) {
-		out.print(msgS);
+		out.println(msgS);
 	}
 	
 	public String serverReceba() {
