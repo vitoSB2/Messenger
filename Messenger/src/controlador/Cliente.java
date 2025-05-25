@@ -21,20 +21,15 @@ public class Cliente {
         new Thread(()->{
         	try {//						   this.ip
         		clienteSocket = new Socket(this.ip, this.porta);
-        		System.out.println("Conectado ao servidor!");
         		
         		in = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()));
         		out = new PrintWriter(clienteSocket.getOutputStream(), true);
-        		
-        		//System.out.println("Socket conectado? " + clienteSocket.isConnected());
-        		//System.out.println("Socket fechado? " + clienteSocket.isClosed());
         		
         		// THREAD PRA VERIFICAR CHEGADA DE MENSAGEM
         		new Thread(() -> {
         			String mensagem;
         			try {
         				while ((mensagem = clienteReceba()) != null) {
-        					System.out.println("Servidor: " + mensagem);
         					ControladorPrincipal.panelP.criarMensagemRecebida(mensagem);
         					ControladorPrincipal.panelP.repaint();
         				}

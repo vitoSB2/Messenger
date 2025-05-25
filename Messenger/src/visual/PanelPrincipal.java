@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
+import modelo.State;
 import modelo.Util;
 
 public class PanelPrincipal extends JPanel{
@@ -50,7 +52,11 @@ public class PanelPrincipal extends JPanel{
 	public void setIP(String IP, String porta) {
 		this.IPconectado = IP;
 		this.porta = porta;
-		this.IP.setText("Conectado no IP: " + IPconectado + " na Porta:" + this.porta);
+		if(State.state == State.CLIENTE)
+			this.IP.setText("Cliente Conectado no IP: " + IPconectado + " na Porta: " + this.porta);
+		else if (State.state == State.SERVER)
+			this.IP.setText("Server Iniciado. IP: " + IPconectado + " || Porta: " + this.porta);
+		
 	}
 
 	public JLabel getLogo() {

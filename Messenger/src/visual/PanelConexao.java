@@ -13,7 +13,7 @@ import modelo.Util;
 
 public class PanelConexao extends JPanel{
 	
-	JLabel logo, promptIP, promptPorta;
+	JLabel logo, promptIP, promptPorta, avisoServer;
 	JTextField IP, porta;
 	JPanel div;
 	JButton enter;
@@ -25,6 +25,7 @@ public class PanelConexao extends JPanel{
 		this.add(getLogo());
 		this.add(getPromptIP());
 		this.add(getPromptPorta());
+		this.add(getAvisoServer());
 		this.add(getEnter());
 		this.add(getIP());
 		this.add(getPorta());
@@ -60,11 +61,23 @@ public class PanelConexao extends JPanel{
 			promptPorta = new JLabel();
 			promptPorta.setHorizontalAlignment(SwingConstants.CENTER);
 			promptPorta.setForeground(new Color(45, 45, 45));
-			promptPorta.setFont(new Font("Montserrat", Font.BOLD, 14));
+			promptPorta.setFont(new Font("Montserrat", Font.BOLD, 15));
 			promptPorta.setBounds(140, 310, 220, 18);
-			promptPorta.setText("Insira a porta para conexão:");
+			promptPorta.setText("Insira a Porta para conexão:");
 		}
 		return promptPorta;
+	}
+
+	public JLabel getAvisoServer() {
+		if(avisoServer == null) {
+			avisoServer = new JLabel();
+			avisoServer.setHorizontalAlignment(SwingConstants.CENTER);
+			avisoServer.setForeground(new Color(160, 160, 160));
+			avisoServer.setFont(new Font("Montserrat", Font.BOLD, 14));
+			avisoServer.setBounds(35, 90, 430, 17);
+			avisoServer.setText("Preencha apenas o campo da Porta para criar o Servidor");
+		}
+		return avisoServer;
 	}
 
 	public JButton getEnter() {

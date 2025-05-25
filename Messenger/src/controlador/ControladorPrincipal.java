@@ -7,7 +7,6 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import modelo.State;
 import visual.Frame;
 import visual.PanelPrincipal;
@@ -33,20 +32,10 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == panelP.getEnter()) {
-			if(importado){
-				panelP.criarArquivoEnviado(arquivo);
-				panelP.getTexto().setText("");
-				panelP.getTexto().setEnabled(true);
-				importado = false;
-			} else {
-				mandaMensagem();
-				panelP.getTexto().setText("");
-				f.repaint();
-				f.revalidate();
-			}
-		}
+		if(e.getSource() == panelP.getEnter())
+			enviar();
 
+		// CASO CLIQUE NO BOTÃO ANEXAR PARA SELECIONAR O ARQUIVO
 		if(e.getSource() == panelP.getAnexo()) {
 			// CRIA UMA ABA PARA A SELEÇÃO DE ARQUIVO
 			JFileChooser fileChooser = new JFileChooser();
@@ -66,11 +55,41 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 	            } else if (!arquivo.exists()){
 					JOptionPane.showMessageDialog(null, "O Arquivo selecionado não existe!", 
 					"Aviso", JOptionPane.WARNING_MESSAGE);
+				// TESTA DE O ARQUIVO SELECIONADO É MAIOR QUE 1MB
 				} else if (tamanhoMB > 1){
 					JOptionPane.showMessageDialog(null, "O Arquivo selecionado é maior que 1MB!", 
 					"Aviso", JOptionPane.WARNING_MESSAGE);
 				}
 			}
+		}
+	}
+
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+			enviar();
+	}
+
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	private void enviar(){
+		// SE TIVER COM UM ARQUIVO SELECIONADO
+		if(importado){
+			panelP.criarArquivoEnviado(arquivo);
+			panelP.getTexto().setText("");
+			panelP.getTexto().setEnabled(true);
+			importado = false;
+		// SE NÃO TIVER NENHUM ARQUIVO SELECIONADO, MANDA MENSAGEM NORMAL
+		} else if (panelP.getTexto().getText().isBlank())
+			panelP.getTexto().setText("");
+		else {
+			mandaMensagem();
+			panelP.getTexto().setText("");
 		}
 	}
 	
@@ -81,32 +100,8 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 			Main.server.serverSend(panelP.getTexto().getText());
 		}
 		panelP.criarMensagemEnviada(panelP.getTexto().getText());
+		f.repaint();
+		f.revalidate();
 	}
-
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if(importado){
-				panelP.criarArquivoEnviado(arquivo);
-				panelP.getTexto().setText("");
-				panelP.getTexto().setEnabled(true);
-				importado = false;
-			} else {
-				mandaMensagem();
-				panelP.getTexto().setText("");
-				f.repaint();
-				f.revalidate();
-			}
-		}
-	}
-
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}	
 	
 }

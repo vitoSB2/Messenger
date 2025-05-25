@@ -17,8 +17,6 @@ public class Server {
 	public ServerSocket serverSocket;
 	public Socket clienteSocket;
 	
-	
-	
 	public Server(String porta) {
 		
 		this.porta = Integer.parseInt(porta);
@@ -27,12 +25,7 @@ public class Server {
 			try {
 				
 				serverSocket = new ServerSocket(this.porta);
-				System.out.println("Server On! Porta: " + Integer.toString(serverSocket.getLocalPort()) + " IP: " + serverSocket.getInetAddress());
-				
 				clienteSocket = serverSocket.accept();
-				
-				String clienteIP = clienteSocket.getInetAddress().toString();
-				System.out.println("Cliente logado! || " + clienteIP);
 				
 				in = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()));
 				out = new PrintWriter(clienteSocket.getOutputStream(), true);
@@ -41,12 +34,10 @@ public class Server {
 					String mensagem;
 					try {
 						while ((mensagem = serverReceba()) != null) {
-							System.out.println("Mensagem do cliente: " + mensagem);
 							ControladorPrincipal.panelP.criarMensagemRecebida(mensagem);
         					ControladorPrincipal.panelP.repaint();
 						}
 					} catch (Exception e) {
-						System.out.println("Conexão encerrada.");
 					}
 				}).start();
 				
