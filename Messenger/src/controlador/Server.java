@@ -42,6 +42,8 @@ public class Server {
 					try {
 						while ((mensagem = serverReceba()) != null) {
 							System.out.println("Mensagem do cliente: " + mensagem);
+							ControladorPrincipal.panelP.criarMensagemRecebida(mensagem);
+        					ControladorPrincipal.panelP.repaint();
 						}
 					} catch (Exception e) {
 						System.out.println("Conexão encerrada.");

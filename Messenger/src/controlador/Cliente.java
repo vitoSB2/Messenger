@@ -35,6 +35,8 @@ public class Cliente {
         			try {
         				while ((mensagem = clienteReceba()) != null) {
         					System.out.println("Servidor: " + mensagem);
+        					ControladorPrincipal.panelP.criarMensagemRecebida(mensagem);
+        					ControladorPrincipal.panelP.repaint();
         				}
         			} catch (Exception e) {
         				e.printStackTrace();

@@ -14,7 +14,7 @@ import visual.PanelPrincipal;
 
 public class ControladorPrincipal implements ActionListener, KeyListener{
 	
-	PanelPrincipal panelP;
+	static PanelPrincipal panelP;
 	Frame f;
 	File arquivo;
 	boolean importado;
@@ -40,12 +40,7 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 				panelP.getTexto().setEnabled(true);
 				importado = false;
 			} else {
-				if (State.state == State.CLIENTE) {
-					Main.cliente.clienteSend(panelP.getTexto().getText());
-				} else if (State.state == State.SERVER) {
-					Main.server.serverSend(panelP.getTexto().getText());
-				}
-				panelP.criarMensagemEnviada(panelP.getTexto().getText());
+				mandaMensagem();
 				panelP.getTexto().setText("");
 				f.repaint();
 				f.revalidate();
@@ -79,6 +74,15 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 		}
 	}
 	
+	private void mandaMensagem() {
+		if (State.state == State.CLIENTE) {
+			Main.cliente.clienteSend(panelP.getTexto().getText());
+		} else if (State.state == State.SERVER) {
+			Main.server.serverSend(panelP.getTexto().getText());
+		}
+		panelP.criarMensagemEnviada(panelP.getTexto().getText());
+	}
+
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -92,7 +96,7 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 				panelP.getTexto().setEnabled(true);
 				importado = false;
 			} else {
-				panelP.criarMensagemEnviada(panelP.getTexto().getText());
+				mandaMensagem();
 				panelP.getTexto().setText("");
 				f.repaint();
 				f.revalidate();
