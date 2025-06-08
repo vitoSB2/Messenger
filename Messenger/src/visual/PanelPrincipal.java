@@ -21,6 +21,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import modelo.MyFile;
 import modelo.State;
 import modelo.Util;
 
@@ -36,12 +37,14 @@ public class PanelPrincipal extends JPanel{
 	JButton[] downloads;
 	String IPconectado, porta;
 	int quantMensagens=0, maxWidth=220, espacamento=57;
+	MyFile[] arquivos;
 	
 	public PanelPrincipal() {
 		setBackground(new Color(235, 235, 235));
 		mensagensPane = new JPanel[1];
 		mensagens = new JLabel[1];
 		downloads = new JButton[1];
+		arquivos = new MyFile[1];
 		this.setLayout(null);
 		this.setPreferredSize(new Dimension(500, 600));
 		this.add(getLogo());
@@ -245,21 +248,21 @@ public class PanelPrincipal extends JPanel{
     	mensagensFundo.revalidate();
 	}
 
-	public void criarArquivoEnviado(File arquivo){
+	public void criarArquivoEnviado(MyFile arquivo){
 		quantMensagens++;
 		if(quantMensagens>mensagens.length)
 			aumentarTamanhoMensagens();
 
-		mensagens[quantMensagens-1] = new JLabel(arquivo.getName());
+		mensagens[quantMensagens-1] = new JLabel(arquivo.nome);
 		mensagens[quantMensagens-1].setFont(new Font("Montserrat", Font.BOLD, 14));
 		mensagens[quantMensagens-1].setLocation(15, 15);
 
 		// OBTEM-SE A FONTMETRICS ATRAVÉS DO JLABEL
 		FontMetrics fm = mensagens[quantMensagens-1].getFontMetrics(mensagens[quantMensagens-1].getFont());
-		if(fm.stringWidth(arquivo.getName()) > maxWidth-67){
+		if(fm.stringWidth(arquivo.nome) > maxWidth-67){
         	mensagens[quantMensagens-1].setSize(new Dimension(maxWidth-77, fm.getHeight()));
 		} else
-			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(arquivo.getName()), fm.getHeight()));
+			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(arquivo.nome), fm.getHeight()));
 		
 		mensagens[quantMensagens-1].setSize(mensagens[quantMensagens-1].getPreferredSize());
 
@@ -269,9 +272,15 @@ public class PanelPrincipal extends JPanel{
 		downloads[quantMensagens-1].setBorder(new LineBorder(new Color(167, 190, 215), 1, false));
 		downloads[quantMensagens - 1].setIcon(Util.resizeIcon("download", 23, 25));
 		
+		arquivos[quantMensagens-1] = arquivo;
 		downloads[quantMensagens-1].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				baixarArquivo(arquivo);
+				Object botaoFonte = e.getSource();
+				int nBotao = 0;
+				while(botaoFonte != downloads[nBotao])
+					nBotao++;
+				
+				baixarArquivo(arquivos[nBotao]);
 			}
 		});
 		downloads[quantMensagens - 1].setBounds(
@@ -299,21 +308,21 @@ public class PanelPrincipal extends JPanel{
 		mensagensFundo.repaint();
 	}
 
-	public void criarArquivoRecebido(File arquivo){
+	public void criarArquivoRecebido(MyFile arquivo){
 		quantMensagens++;
 		if(quantMensagens>mensagens.length)
 			aumentarTamanhoMensagens();
 
-		mensagens[quantMensagens-1] = new JLabel(arquivo.getName());
+		mensagens[quantMensagens-1] = new JLabel(arquivo.nome);
 		mensagens[quantMensagens-1].setFont(new Font("Montserrat", Font.BOLD, 14));
 		mensagens[quantMensagens-1].setLocation(15, 15);
 
 		// OBTEM-SE A FONTMETRICS ATRAVÉS DO JLABEL
 		FontMetrics fm = mensagens[quantMensagens-1].getFontMetrics(mensagens[quantMensagens-1].getFont());
-		if(fm.stringWidth(arquivo.getName()) > maxWidth-67){
+		if(fm.stringWidth(arquivo.nome) > maxWidth-67){
         	mensagens[quantMensagens-1].setSize(new Dimension(maxWidth-77, fm.getHeight()));
 		} else
-			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(arquivo.getName()), fm.getHeight()));
+			mensagens[quantMensagens-1].setSize(new Dimension(fm.stringWidth(arquivo.nome), fm.getHeight()));
 		
 		mensagens[quantMensagens-1].setSize(mensagens[quantMensagens-1].getPreferredSize());
 
@@ -322,9 +331,17 @@ public class PanelPrincipal extends JPanel{
 		downloads[quantMensagens-1].setBackground(new Color(235, 235, 235));
 		downloads[quantMensagens-1].setBorder(new LineBorder(new Color(189, 189, 189), 1, false));
 		downloads[quantMensagens - 1].setIcon(Util.resizeIcon("download", 23, 25));
+		
+		arquivos[quantMensagens-1] = arquivo;
+		arquivos[quantMensagens-1].nMensagem = quantMensagens-1;
 		downloads[quantMensagens-1].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				baixarArquivo(arquivo);
+				Object botaoFonte = e.getSource();
+				int nBotao = 0;
+				while(botaoFonte != downloads[nBotao])
+					nBotao++;
+				
+				baixarArquivo(arquivos[nBotao]);
 			}
 		});
 		downloads[quantMensagens - 1].setBounds(
@@ -357,36 +374,34 @@ public class PanelPrincipal extends JPanel{
 		JLabel[] aux = new JLabel[quantMensagens];
 		JPanel[] auxP = new JPanel[quantMensagens];
 		JButton[] auxB = new JButton[quantMensagens];
+		MyFile[] auxF = new MyFile[quantMensagens];
 
 		for (int i = 0; i < mensagens.length; i++) {
 			aux[i] = mensagens[i];
 			auxP[i] = mensagensPane[i];
 			auxB[i] = downloads[i];
+			auxF[i] = arquivos[i];
 		}
 
 		mensagens = aux;
 		mensagensPane = auxP;
 		downloads = auxB;
+		arquivos = auxF;
 	}
 	
 	// BAIXAR ARQUIVOS
-	public void baixarArquivo(File arquivo) {
-		try {
-		    FileInputStream fileInputStream = new FileInputStream(arquivo);
-		    FileOutputStream fileOutputStream = new FileOutputStream(arquivo.getName());
-		    
-		    byte[] buffer = new byte[1024];
-		    int bytesRead;
-		    while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-		        fileOutputStream.write(buffer, 0, bytesRead);
-		    }
-		    
-		    fileInputStream.close();
-		    fileOutputStream.close();
-		} catch (FileNotFoundException e1) {
-		    e1.printStackTrace();
-		} catch (IOException e1) {
-		    e1.printStackTrace();
-		}
+	public void baixarArquivo(MyFile arquivo) {
+		File fileToDownload = new File(arquivo.nome);
+
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(fileToDownload);  //copia conteudo do arquivo
+                                                                                       //para fileToDownload
+            fileOutputStream.write(arquivo.dados);
+            fileOutputStream.close();
+            
+        } catch (IOException error) {
+            error.printStackTrace();
+
+        }
 	}
 }
