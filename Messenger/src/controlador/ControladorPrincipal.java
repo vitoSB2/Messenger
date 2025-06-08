@@ -40,7 +40,7 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 		if(e.getSource() == panelP.getEnter())
 			enviar();
 
-		// CASO CLIQUE NO BOTÃO ANEXAR PARA SELECIONAR O ARQUIVO
+		// BOTÃO DE ANEXAR PARA SELECIONAR O ARQUIVO
 		if(e.getSource() == panelP.getAnexo()) {
 			// CRIA UMA ABA PARA A SELEÇÃO DE ARQUIVO
 			JFileChooser fileChooser = new JFileChooser();
@@ -52,24 +52,24 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 	            arquivo = fileChooser.getSelectedFile();
 	            byte[] tamanho = new byte[(int) arquivo.length()];
 	            
-	            // TESTA SE O ARQUIVO EXISTE
+	            // TESTA SE O ARQUIVO EXISTE E SE TEM ALGUM CONTEÚDO
 	            if(arquivo.exists() && tamanho.length > 0) {
 	    	        panelP.getTexto().setText(arquivo.getName());
 					panelP.getTexto().setEnabled(false);
 					importado = true;
-	            } else if (!arquivo.exists())
-					JOptionPane.showMessageDialog(null, "O Arquivo selecionado não existe!", 
-					"Aviso", JOptionPane.WARNING_MESSAGE);
-	            else
-	            	JOptionPane.showMessageDialog(null, "O Arquivo está vazio!", 
-	    					"Aviso", JOptionPane.WARNING_MESSAGE);
+	            } else if (!arquivo.exists()) {
+					JOptionPane.showMessageDialog(null, "O Arquivo selecionado não existe!", "Aviso", JOptionPane.WARNING_MESSAGE);
+	        	} else {
+	            	JOptionPane.showMessageDialog(null, "O Arquivo está vazio!", "Aviso", JOptionPane.WARNING_MESSAGE);
+	            }
 			}
 		}
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			enviar();
+		}
 	}
 
 	public void keyTyped(KeyEvent e) {
@@ -80,19 +80,21 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 	}
 
+	// QUANDO O BOTÃO DE ENVIAR É PRESSIONADO
 	private void enviar(){
 		// SE TIVER COM UM ARQUIVO SELECIONADO
 		if(importado){
 			mandarArquivo();
 		// SE NÃO TIVER NENHUM ARQUIVO SELECIONADO, MANDA MENSAGEM NORMAL
-		} else if (panelP.getTexto().getText().isBlank())
+		} else if (panelP.getTexto().getText().isBlank()) {
 			panelP.getTexto().setText("");
-		else {
+		}else {
 			mandaMensagem();
 			panelP.getTexto().setText("");
 		}
 	}
 	
+	// LÓGICA DE ENVIO DE MENSAGEM DE TEXTO
 	private void mandaMensagem() {
 		if (State.state == State.CLIENTE) {
 			Main.cliente.clienteSend(panelP.getTexto().getText());
@@ -104,6 +106,7 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 		f.revalidate();
 	}
 	
+	// LÓGICA DE ENVIO DE ARQUIVOS
 	private void mandarArquivo() {
 		try {
 	        byte[] fileContentBytes = new byte[(int) arquivo.length()];

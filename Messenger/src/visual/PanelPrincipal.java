@@ -391,12 +391,12 @@ public class PanelPrincipal extends JPanel{
 	
 	// BAIXAR ARQUIVOS
 	public void baixarArquivo(MyFile arquivo) {
-		File fileToDownload = new File(arquivo.nome);
+		File fileToDownload = new File(arquivo.nome); // CRIA UM ESPAÇO NO DISCO PARA O ARQUIVO
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(fileToDownload);  //copia conteudo do arquivo
                                                                                        //para fileToDownload
-            fileOutputStream.write(arquivo.dados);
+            fileOutputStream.write(arquivo.dados); // POSICIONA O CONTEÚDO DO ARQUIVO
             fileOutputStream.close();
             
         } catch (IOException error) {

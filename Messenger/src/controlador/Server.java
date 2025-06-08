@@ -36,17 +36,17 @@ public class Server {
 		new Thread(()->{
 			try {
 				
-				serverSocket = new ServerSocket(this.porta);
-				clienteSocket = serverSocket.accept();
+				serverSocket = new ServerSocket(this.porta); // INICIA O SERVER
+				clienteSocket = serverSocket.accept(); // CRIA O SOCKET COM O CLIENTE
 				
-				in = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()));
-				out = new PrintWriter(clienteSocket.getOutputStream(), true);
+				in = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream())); // CRIA O FLUXO DE RECEBIMENTO DE TEXTO
+				out = new PrintWriter(clienteSocket.getOutputStream(), true); // CRIA O FLUXO DE ENVIO DE TEXTO
 				
 				new Thread(() -> {
 					String mensagem;
 					try {
 						while ((mensagem = serverReceba()) != null) {
-							ControladorPrincipal.panelP.criarMensagemRecebida(mensagem);
+							ControladorPrincipal.panelP.criarMensagemRecebida(mensagem); // CRIA A MENSAGEM NO PANEL
         					ControladorPrincipal.panelP.repaint();
 						}
 					} catch (Exception e) {
@@ -112,10 +112,12 @@ public class Server {
         }).start();
 	}
 	
+	// MANDA MENSAGEM DE TEXTO
 	public void serverSend(String msgS) {
 		out.println(msgS);
 	}
 	
+	// MANDA ARQUIVOS
 	public void serverSendFile(File arquivo) {
     	try {
     		fileInputStream = new FileInputStream(arquivo.getAbsolutePath()); //acessa caminho do arquivo
@@ -135,6 +137,7 @@ public class Server {
         }
     }
 	
+	// RECEBE MENSAGEM DE TEXTO
 	public String serverReceba() {
 		try {
 	        String mensagem = in.readLine();
@@ -147,6 +150,7 @@ public class Server {
 	    return null;
 	}
 	
+	// FECHA O SERVIDOR
 	public void closeServer() {
 		try {
 			clienteSocket.close();

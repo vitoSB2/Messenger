@@ -34,17 +34,17 @@ public class Cliente {
         // THREAD DE MENSAGENS DO CLIENTE
         new Thread(()->{
         	try {//						   this.ip
-        		clienteSocket = new Socket(this.ip, this.porta);
+        		clienteSocket = new Socket(this.ip, this.porta); // INICIA O SOCKET
         		
-        		in = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()));
-        		out = new PrintWriter(clienteSocket.getOutputStream(), true);
+        		in = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream())); // CRIA O FLUXO DE RECEBIMENTO DE TEXTO
+        		out = new PrintWriter(clienteSocket.getOutputStream(), true); // CRIA O FLUXO DE ENVIO DE TEXTO
         		
         		// THREAD PRA VERIFICAR CHEGADA DE MENSAGEM
         		new Thread(() -> {
         			String mensagem;
         			try {
         				while ((mensagem = clienteReceba()) != null) {
-        					ControladorPrincipal.panelP.criarMensagemRecebida(mensagem);
+        					ControladorPrincipal.panelP.criarMensagemRecebida(mensagem); // CRIA A MENSAGEM NO PANEL
         					ControladorPrincipal.panelP.repaint();
         				}
         			} catch (Exception e) {
@@ -98,6 +98,7 @@ public class Cliente {
         					closeCliente();
         					e.printStackTrace();
         				} catch (IOException error) {
+        					closeCliente();
         					error.printStackTrace();
         				}
         			}
@@ -110,10 +111,12 @@ public class Cliente {
         }).start();
     }
 
+    // ENVIA MENSAGEM DE TEXTO
     public void clienteSend(String msg) {
         out.println(msg);
     }
     
+    // ENVIA ARQUIVO
     public void clienteSendFile(File arquivo) {
     	try {
     		fileInputStream = new FileInputStream(arquivo.getAbsolutePath()); //acessa caminho do arquivo
@@ -133,6 +136,7 @@ public class Cliente {
         }
     }
     
+    // RECEBE MENSAGEM DE TEXTO
     public String clienteReceba() {
 		try {
 	        String mensagem = in.readLine();
@@ -143,6 +147,7 @@ public class Cliente {
 	    return null;
 	}
 	
+    // FECHA O CLIENTE
     public void closeCliente() {
 		try {
 			clienteSocket.close();
