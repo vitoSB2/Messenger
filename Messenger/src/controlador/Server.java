@@ -57,6 +57,8 @@ public class Server {
 		try {
 	        String mensagem = in.readLine();
 	        return mensagem;
+	    } catch (java.net.SocketException e) {
+	        closeServer(); // Fecha o servidor ao detectar o erro
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
@@ -70,6 +72,7 @@ public class Server {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Main.f.dispose();
 	}
 
 }

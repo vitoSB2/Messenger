@@ -5,7 +5,7 @@ import visual.PanelConexao;
 
 public class Main {
 	
-	Frame f;
+	public static Frame f;
 	PanelConexao pc;
 	ControladorConexao cc;
 	public static Server server;

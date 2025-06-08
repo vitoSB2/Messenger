@@ -36,6 +36,7 @@ public class Cliente {
         			} catch (Exception e) {
         				e.printStackTrace();
         			}
+        			closeCliente();
         		}).start();
         		
         	} catch (IOException e) {
@@ -59,11 +60,12 @@ public class Cliente {
 	    return null;
 	}
 	
-    public void closeServer() {
+    public void closeCliente() {
 		try {
 			clienteSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Main.f.dispose();
 	}
 }

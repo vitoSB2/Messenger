@@ -45,21 +45,15 @@ public class ControladorPrincipal implements ActionListener, KeyListener{
 	        if (resultado == JFileChooser.APPROVE_OPTION) {
 	        	// GUARDA O ARQUIVO
 	            arquivo = fileChooser.getSelectedFile();
-				double tamanhoMB = arquivo.length() / (1024.0 * 1024.0);
 	            
 	            // TESTA SE O ARQUIVO EXISTE
-	            if(arquivo.exists() && tamanhoMB < 1) {
+	            if(arquivo.exists()) {
 	    	        panelP.getTexto().setText(arquivo.getName());
 					panelP.getTexto().setEnabled(false);
 					importado = true;
-	            } else if (!arquivo.exists()){
+	            } else
 					JOptionPane.showMessageDialog(null, "O Arquivo selecionado não existe!", 
 					"Aviso", JOptionPane.WARNING_MESSAGE);
-				// TESTA DE O ARQUIVO SELECIONADO É MAIOR QUE 1MB
-				} else if (tamanhoMB > 1){
-					JOptionPane.showMessageDialog(null, "O Arquivo selecionado é maior que 1MB!", 
-					"Aviso", JOptionPane.WARNING_MESSAGE);
-				}
 			}
 		}
 	}
