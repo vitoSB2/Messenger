@@ -7,6 +7,10 @@ import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -264,9 +268,10 @@ public class PanelPrincipal extends JPanel{
 		downloads[quantMensagens-1].setBackground(new Color(213, 233, 255));
 		downloads[quantMensagens-1].setBorder(new LineBorder(new Color(167, 190, 215), 1, false));
 		downloads[quantMensagens - 1].setIcon(Util.resizeIcon("download", 23, 25));
+		
 		downloads[quantMensagens-1].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// COLOCAR O ALGORITMO DE BAIXAR AQUI
+				baixarArquivo(arquivo);
 			}
 		});
 		downloads[quantMensagens - 1].setBounds(
@@ -319,7 +324,7 @@ public class PanelPrincipal extends JPanel{
 		downloads[quantMensagens - 1].setIcon(Util.resizeIcon("download", 23, 25));
 		downloads[quantMensagens-1].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// COLOCAR O ALGORITMO DE BAIXAR AQUI
+				baixarArquivo(arquivo);
 			}
 		});
 		downloads[quantMensagens - 1].setBounds(
@@ -362,5 +367,26 @@ public class PanelPrincipal extends JPanel{
 		mensagens = aux;
 		mensagensPane = auxP;
 		downloads = auxB;
+	}
+	
+	// BAIXAR ARQUIVOS
+	public void baixarArquivo(File arquivo) {
+		try {
+		    FileInputStream fileInputStream = new FileInputStream(arquivo);
+		    FileOutputStream fileOutputStream = new FileOutputStream(arquivo.getName());
+		    
+		    byte[] buffer = new byte[1024];
+		    int bytesRead;
+		    while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+		        fileOutputStream.write(buffer, 0, bytesRead);
+		    }
+		    
+		    fileInputStream.close();
+		    fileOutputStream.close();
+		} catch (FileNotFoundException e1) {
+		    e1.printStackTrace();
+		} catch (IOException e1) {
+		    e1.printStackTrace();
+		}
 	}
 }
