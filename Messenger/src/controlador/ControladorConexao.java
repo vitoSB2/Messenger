@@ -73,12 +73,21 @@ public class ControladorConexao implements ActionListener, KeyListener{
 				e1.printStackTrace();
 			}
 			ip = ipLocal.getHostAddress();
+			mudarPanel();
 				
-		} else {
+		} else { // VIRA CLIENTE E TESTA A CONEXÃO ANTES DE IR PRO CHAT
 			Main.cliente = new Cliente(ip, porta);
-			State.state = State.CLIENTE;
+			
+			if(Main.cliente.isConnected()) {
+				State.state = State.CLIENTE;
+				mudarPanel();				
+			} else {
+				Main.cliente = null;
+				javax.swing.JOptionPane.showMessageDialog(panelC,
+			            "Falha ao conectar ao servidor. Verifique IP e porta.",
+			            "Erro de Conexão", javax.swing.JOptionPane.ERROR_MESSAGE);
+			}
 		}
-		mudarPanel();
 	}
 	
 	private void mudarPanel() {

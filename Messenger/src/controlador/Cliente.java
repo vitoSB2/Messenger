@@ -110,6 +110,11 @@ public class Cliente {
         	
         }).start();
     }
+    
+    // TESTA SE A CONEXÃO FUNCIONOU
+    public boolean isConnected() {
+    	return clienteSocket != null && clienteSocket.isConnected();
+    }
 
     // ENVIA MENSAGEM DE TEXTO
     public void clienteSend(String msg) {
