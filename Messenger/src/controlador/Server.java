@@ -114,7 +114,10 @@ public class Server {
 	
 	// MANDA MENSAGEM DE TEXTO
 	public void serverSend(String msgS) {
-		out.println(msgS);
+		if(out != null)
+    		out.println(msgS);
+    	else 
+    		System.out.println("Erro ao enviar mensagem: conexão não estabelecida ou fechada.");
 	}
 	
 	// MANDA ARQUIVOS

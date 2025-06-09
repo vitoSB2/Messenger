@@ -118,7 +118,10 @@ public class Cliente {
 
     // ENVIA MENSAGEM DE TEXTO
     public void clienteSend(String msg) {
-        out.println(msg);
+    	if(out != null)
+    		out.println(msg);
+    	else 
+    		System.out.println("Erro ao enviar mensagem: conexão não estabelecida ou fechada.");
     }
     
     // ENVIA ARQUIVO
